@@ -2,12 +2,28 @@
 
 def detailed_movies(db):
     '''return the list of movies with their genres and director name'''
-    pass  # YOUR CODE HERE
+    query= """
+    SELECT movies.title, movies.genres, directors.name
+FROM movies
+JOIN directors ON movies.director_id = directors.id
+"""
+    db.execute(query)
+    results = db.fetchall()
+    return results
 
 
 def late_released_movies(db):
     '''return the list of all movies released after their director death'''
-    pass  # YOUR CODE HERE
+    query= """
+     SELECT movies.title
+        FROM directors
+        JOIN movies ON directors.id = movies.director_id
+        WHERE (movies.start_year - directors.death_year) > 0
+        ORDER BY movies.title
+        """
+    db.execute(query)
+    results = db.fetchall()
+    return [r[0] for r in results]
 
 
 def stats_on(db, genre_name):
